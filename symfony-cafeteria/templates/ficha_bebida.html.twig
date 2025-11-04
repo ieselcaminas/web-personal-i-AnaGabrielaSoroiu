@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title %}Bebidas{% endblock %}
+{% block body %}
+    <h1>Bebida</h1>
+    {% if bebida %}
+        {{ include('partials/datos_bebida.html.twig', { 'bebida' : bebida }) }}
+    {% else %}
+        <h4>La bebida que buscas no existe</h4>
+    {% endif %}
+{% endblock %}

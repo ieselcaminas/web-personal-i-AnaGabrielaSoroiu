@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ cafeteria.nombre }}{% endblock %}
+{% block body %}
+
+    <h1> {{ cafeteria.nombre }} </h1>
+    <h3>Menú</h3>
+
+    <ul>
+        {% for b in bebidas %}
+            <li>{{ b.nombre }} {{ b.tipo }} {{ b.alergenos }}</li>
+        {% else %}
+            <li>No se encuentra con un menú aún :c<li>
+        {% endfor %}
+    </ul>
+    <a href="{{ path('inicio') }}">← Volver a las cafeterías</a>
+{% endblock %}

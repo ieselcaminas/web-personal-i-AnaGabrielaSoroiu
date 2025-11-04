@@ -22,6 +22,10 @@ class Bebida
     #[ORM\Column(length: 255)]
     private ?string $alergenos = null;
 
+    #[ORM\ManyToOne(targetEntity: Cafeteria::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Cafeteria $cafeteria = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +63,18 @@ class Bebida
     public function setAlergenos(string $alergenos): static
     {
         $this->alergenos = $alergenos;
+
+        return $this;
+    }
+
+    public function getCafeteria(): ?Cafeteria
+    {
+        return $this->cafeteria;
+    }
+
+    public function setCafeteria(?Cafeteria $cafeteria): static
+    {
+        $this->cafeteria = $cafeteria;
 
         return $this;
     }

@@ -1,0 +1,8 @@
+<ul>
+    <li><strong>{{ bebida.nombre }}</strong></li>
+    <li><strong>Tipo</strong>: {{ bebida.tipo }}</li>
+    <li><strong>Alergenos</strong>: {{ bebida.alergenos }}</li>
+    {% if bebida.cafeteria %}
+    <li><strong>Cafeteria</strong>: {{ bebida.cafeteria.nombre }}</li>
+    {% endif %}
+</ul>

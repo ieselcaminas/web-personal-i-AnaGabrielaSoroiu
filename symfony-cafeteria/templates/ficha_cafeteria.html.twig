@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title %}Cafeteria{% endblock %}
+{% block body %}
+    <h1>Cafeteria</h1>
+    {% if cafeteria %}
+        {{ include('partials/datos_cafeteria.html.twig', { 'cafeteria' : cafeteria }) }}
+    {% else %}
+        <h4>La cafeteria que buscas no existe</h4>
+    {% endif %}
+{% endblock %}

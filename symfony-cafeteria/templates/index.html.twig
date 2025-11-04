@@ -1,5 +1,16 @@
 {% extends 'base.html.twig' %}
 {% block title %}Cafetería{% endblock %}
 {% block body %}
-    <h1>Mochi mochi</h1>
+    <h1>¡Bienvenid@!</h1>
+    <h3>Elige la cafetería que deseas explorar</h3>
+    <ul>
+        {% for c in cafeterias %}
+            <li>
+                <a href="{{ path('listar_bebida', { id : c.nombre } ) }}">
+                {{ c.nombre }} {{ c.calle }} {{ c.telefono }} {{ c.email }}</a>
+            </li>
+        {% else %}
+            <li>No hay ninguna cafeteria registrada actualmente</li>
+        {% endfor %}
+    </ul>
 {% endblock %}
