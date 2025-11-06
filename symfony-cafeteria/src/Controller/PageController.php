@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -16,6 +15,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class PageController extends AbstractController
 {
+    //Página para iniciar sesión
+    #[Route('/inicio', name: 'index')]
+    public function index(): Response {
+        return $this->render('inicio.html.twig');
+    }
+
     //En el inicio de la página aparecerá un listado de cafeteria
     #[Route('/', name: 'inicio')]
     public function inicio(ManagerRegistry $doctrine): Response {
@@ -26,29 +31,104 @@ final class PageController extends AbstractController
         ['cafeterias' => $cafeterias]);
     }
 
-    //Creación de un nuevo contacto
-    #[Route('/bebida/nueva', name: 'nueva_bebida')]
-    public function nuevoBebida(ManagerRegistry $doctrine, Request $request) {
+    //Creación de una nueva bebida
+    #[Route('/bebida/nueva/{codigo}', name: 'nueva_bebida')]
+    public function nuevoBebida(ManagerRegistry $doctrine, Request $request, $codigo = null) {
+        //Si no está logeado, nos redirige a la página inicio
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('index');
+        }
+        
         $bebida = new Bebida();
+        $cafeteria = null;
+
+        //Pilla el código de la cafeteria en la que se encuentra de esta manera
+        //cuando se crea una nueva sale el nombre de la cafeteria en la que estás
+        if($codigo) {
+            $cafeteriaRepo = $doctrine->getRepository(Cafeteria::class);
+            $cafeteria = $cafeteriaRepo->find($codigo);
+
+            if ($cafeteria) {
+                $bebida->setCafeteria($cafeteria);
+            }
+        }
+
         $formulario = $this->createForm(BebidaType::class, $bebida);
         $formulario->handleRequest($request);
-
+        
         if($formulario->isSubmitted() && $formulario->isValid()){
-            $bebida = $formulario->getData();
-
             $entityManager = $doctrine->getManager();
             $entityManager->persist($bebida);
             $entityManager->flush();
-            return $this->redirectToRoute('ficha_bebida', 
-            ["codigo" => $bebida->getId()]);
+            return $this->redirectToRoute('listar_bebida', 
+            ["codigo" => $cafeteria->getId()]);
         }
         return $this->render('bebida/nuevo.html.twig', 
-        array('formulario' => $formulario->createView()));
+        ['formulario' => $formulario->createView(),
+        'cafeteria' => $cafeteria]);
+    }
+
+    //Editar los datos de una bebida
+    #[Route('/bebida/editar/{codigo}', name: 'editar_bebida')]
+    public function editarBebida(ManagerRegistry $doctrine, $codigo, Request $request): Response {
+        //Si no está logeado, nos redirige a la página inicio
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('index');
+        }
+        
+        $entityManager = $doctrine->getManager();
+        $repositorio = $doctrine->getRepository(Bebida::class);
+        $bebida = $repositorio->find($codigo);
+
+        if(!$bebida) {
+            throw $this->createNotFoundException("No se ha encontrado la bebida");
+        }
+
+        $formulario = $this->createForm(BebidaType::class, $bebida);
+        $formulario->handleRequest($request);
+
+        if($bebida) {            
+            if($formulario->isSubmitted() && $formulario->isValid()){
+                $entityManager->flush();
+
+                return $this->redirectToRoute('listar_bebida');
+            }
+        }
+        return $this->render('bebida/editar.html.twig', 
+        ['formulario' => $formulario->createView(),
+        'bebida' => $bebida]);
+    }
+
+    //Eliminación de una bebida
+    #[Route('/bebida/eliminar/{codigo}', name: 'eliminar_bebida')]
+    public function eliminarBebida(ManagerRegistry $doctrine, $codigo) {
+        //Si no está logeado, nos redirige a la página inicio
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('index');
+        }
+        
+        $entityManager = $doctrine->getManager();
+        $repositorio = $doctrine->getRepository(Bebida::class);
+        $bebida = $repositorio->find($codigo);
+
+        if(!$bebida) {
+            throw $this->createNotFoundException("No se ha encontrado la cafeteria");
+        }
+
+        $entityManager->remove($bebida);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('listar_bebida');
     }
 
     //Creación de una cafeteria
    #[Route('/cafeteria/nueva', name: 'nueva_cafeteria')]
     public function nuevoCafe(ManagerRegistry $doctrine, Request $request) {
+        //Si no está logeado, nos redirige a la página inicio
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('index');
+        }
+        
         $cafeteria = new Cafeteria();
         $formulario = $this->createForm(CafeteriaType::class, $cafeteria);
         $formulario->handleRequest($request);
@@ -60,11 +140,64 @@ final class PageController extends AbstractController
             $entityManager->persist($cafeteria);
             $entityManager->flush();
 
-            return $this->redirectToRoute('ficha_cafeteria', 
+            return $this->redirectToRoute('inicio', 
             ["codigo" => $cafeteria->getId()]);
         }
         return $this->render('cafeteria/nuevo.html.twig', 
         array('formulario' => $formulario->createView()));
+    }
+
+    //Editar los datos de una cafeteria
+    #[Route('/cafeteria/editar/{codigo}', name: 'editar_cafeteria')]
+    public function editarCafe(ManagerRegistry $doctrine, $codigo, Request $request): Response {
+        //Si no está logeado, nos redirige a la página inicio
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('index');
+        }
+        
+        $entityManager = $doctrine->getManager();
+        $repositorio = $doctrine->getRepository(Cafeteria::class);
+        $cafeteria = $repositorio->find($codigo);
+
+        if(!$cafeteria) {
+            throw $this->createNotFoundException("No se ha encontrado la cafeteria");
+        }
+
+        $formulario = $this->createForm(CafeteriaType::class, $cafeteria);
+        $formulario->handleRequest($request);
+
+        if($cafeteria) {            
+            if($formulario->isSubmitted() && $formulario->isValid()){
+                $entityManager->flush();
+
+                return $this->redirectToRoute('inicio');
+            }
+        }
+        return $this->render('cafeteria/editar.html.twig', 
+        ['formulario' => $formulario->createView(),
+        'cafeteria' => $cafeteria]);
+    }
+
+    //Eliminación de una cafeteria
+    #[Route('/cafeteria/eliminar/{codigo}', name: 'eliminar_cafeteria')]
+    public function eliminarCafe(ManagerRegistry $doctrine, $codigo) {
+        //Si no está logeado, nos redirige a la página inicio
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('index');
+        }
+        
+        $entityManager = $doctrine->getManager();
+        $repositorio = $doctrine->getRepository(Cafeteria::class);
+        $cafeteria = $repositorio->find($codigo);
+
+        if(!$cafeteria) {
+            throw $this->createNotFoundException("No se ha encontrado la cafeteria");
+        }
+
+        $entityManager->remove($cafeteria);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('inicio');
     }
 
     //Buscar una bebida a través del código

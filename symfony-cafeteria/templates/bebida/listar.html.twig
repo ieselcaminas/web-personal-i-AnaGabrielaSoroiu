@@ -7,10 +7,20 @@
 
     <ul>
         {% for b in bebidas %}
-            <li>{{ b.nombre }} {{ b.tipo }} {{ b.alergenos }}</li>
+            <li>{{ b.nombre }} {{ b.tipo }} {{ b.alergenos }} 
+            <a href="{{ path('editar_bebida', { codigo: b.id }) }}">
+                Editar
+            </a>
+            <a href="{{ path('eliminar_bebida', { codigo : b.id }) }}"
+                onclick="return confirm('¿Estás segura de que deseas eliminar {{ b.nombre }}?');">
+                Eliminar
+                </a></li>
         {% else %}
             <li>No se encuentra con un menú aún :c<li>
         {% endfor %}
     </ul>
+    <h3>¿Deseas realizar algún cambio?</h3>
+    <a href="{{ path('nueva_bebida', { codigo : cafeteria.id }) }}">Añadir bebida</a>
+    <br>
     <a href="{{ path('inicio') }}">← Volver a las cafeterías</a>
 {% endblock %}

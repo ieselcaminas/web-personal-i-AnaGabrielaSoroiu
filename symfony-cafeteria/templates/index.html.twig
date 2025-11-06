@@ -6,11 +6,25 @@
     <ul>
         {% for c in cafeterias %}
             <li>
-                <a href="{{ path('listar_bebida', { id : c.nombre } ) }}">
+                <a href="{{ path('listar_bebida', { codigo : c.id } ) }}">
                 {{ c.nombre }} {{ c.calle }} {{ c.telefono }} {{ c.email }}</a>
+                <a href="{{ path('editar_cafeteria', { codigo: c.id }) }}">
+                Editar
+                </a>
+                <!--Hago un return confirm para que pregunte al usuario si realmente
+                quiere eliminar esa cafeteria-->
+                <a href="{{ path('eliminar_cafeteria', { codigo: c.id }) }}"
+                onclick="return confirm('¿Estás segura de que deseas eliminar {{ c.nombre }}?');">
+                Eliminar
+                </a>
             </li>
         {% else %}
             <li>No hay ninguna cafeteria registrada actualmente</li>
         {% endfor %}
     </ul>
+    <h3>¿Deseas agregar uno nuevo?</h3>
+    <a href="{{ path('nueva_cafeteria') }}">Añadir una nueva</a>
+    <br>
+    <a href="{{ path('') }}">Cerrar sesión</a>
+
 {% endblock %}

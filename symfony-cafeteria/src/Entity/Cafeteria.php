@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CafeteriaRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CafeteriaRepository::class)]
@@ -24,6 +26,10 @@ class Cafeteria
 
     #[ORM\Column(length: 255)]
     private ?string $email = null;
+
+    //Para que a la hora de borrar una cafeteria se borren todas las bebidas
+    #[ORM\OneToMany(targetEntity: Bebida::class, mappedBy: 'cafeteria', cascade: ['remove'], orphanRemoval: true)]
+    private Collection $bebidas;
 
     public function getId(): ?int
     {
@@ -77,4 +83,5 @@ class Cafeteria
 
         return $this;
     }
+
 }

@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block title %}Inicio{% endblock %}
+{% block body %}
+    <h1>¡Bienvenid@!</h1>
+    <h3>Para poder realizar esa acción, debes iniciar sesión antes</h3>
+    <a href="{{ path('app_register') }}">Registrarte</a>
+    <a href="{{ path('app_login') }}">Iniciar sesión</a>
+    <a href="{{ path('inicio') }}">Volver a inicio</a>
+{% endblock %}
