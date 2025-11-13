@@ -75,7 +75,7 @@ final class PageController extends AbstractController
         if (!$this->getUser()) {
             return $this->redirectToRoute('index');
         }
-        
+
         $entityManager = $doctrine->getManager();
         $repositorio = $doctrine->getRepository(Bebida::class);
         $bebida = $repositorio->find($codigo);
@@ -96,7 +96,8 @@ final class PageController extends AbstractController
         }
         return $this->render('bebida/editar.html.twig', 
         ['formulario' => $formulario->createView(),
-        'bebida' => $bebida]);
+        'bebida' => $bebida,
+        'cafeteria' => $bebida->getCafeteria()]);
     }
 
     //Eliminación de una bebida
@@ -115,10 +116,13 @@ final class PageController extends AbstractController
             throw $this->createNotFoundException("No se ha encontrado la cafeteria");
         }
 
+        $cafeteria = $bebida->getCafeteria();
+
         $entityManager->remove($bebida);
         $entityManager->flush();
 
-        return $this->redirectToRoute('listar_bebida');
+        return $this->redirectToRoute('listar_bebida', 
+        ['codigo' => $cafeteria->getId()]);
     }
 
     //Creación de una cafeteria

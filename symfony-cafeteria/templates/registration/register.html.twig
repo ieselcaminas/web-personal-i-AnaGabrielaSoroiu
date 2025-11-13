@@ -1,20 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Registro{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+<div class="d-flex justify-content-center my-5">
+    <div class="card p-4" style="max-width:500px;">
+        <h1 class="fw-bold mb-4 text-center" style="color:#b56576;">Registro</h1>
 
-    {{ form_errors(registrationForm) }}
+        {{ form_start(registrationForm) }}
+            
+            <div class="mb-3">
+                {{ form_row(registrationForm.username, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                {{ form_row(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                {{ form_row(registrationForm.plainPassword, {'label': 'Password', 'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                {{ form_row(registrationForm.agreeTerms) }}
+            </div>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.username) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+            <div class="d-flex justify-content-center gap-3 mt-4">
+                <button type="submit" class="btn btn-coquette">Registrar</button>
+                <a href="{{ path('inicio') }}" class="btn btn-outline-secondary rounded-pill">Cancelar</a>
+            </div>
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+        {{ form_end(registrationForm) }}
+    </div>
+</div>
 {% endblock %}

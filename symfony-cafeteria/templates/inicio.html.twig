@@ -1,9 +1,16 @@
 {% extends 'base.html.twig' %}
+
 {% block title %}Inicio{% endblock %}
+
 {% block body %}
-    <h1>¡Bienvenid@!</h1>
-    <h3>Para poder realizar esa acción, debes iniciar sesión antes</h3>
-    <a href="{{ path('app_register') }}">Registrarte</a>
-    <a href="{{ path('app_login') }}">Iniciar sesión</a>
-    <a href="{{ path('inicio') }}">Volver a inicio</a>
+<div class="text-center my-5">
+    <h1 class="fw-bold mb-3" style="color:#b56576;">¡Bienvenid@!</h1>
+    <h3 class="mb-4" style="color:#d46a8d;">Para poder realizar esa acción, debes iniciar sesión antes</h3>
+
+    <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+        <a href="{{ path('app_register') }}" class="btn btn-coquette">Registrarte</a>
+        <a href="{{ path('app_login') }}" class="btn btn-coquette">Iniciar sesión</a>
+        <a href="{{ path('inicio') }}" class="btn btn-outline-secondary rounded-pill">Volver al inicio</a>
+    </div>
+</div>
 {% endblock %}

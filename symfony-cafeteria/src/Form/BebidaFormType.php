@@ -20,9 +20,7 @@ class BebidaFormType extends AbstractType
             ->add('alergenos')
             ->add('cafeteria', EntityType::class, 
             ['class' => Cafeteria::class,
-            'choice_label' => 'nombre'])
-            ->add('save', SubmitType::class, array('label' => 'Enviar'));
-        ;
+            'choice_label' => 'nombre']);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

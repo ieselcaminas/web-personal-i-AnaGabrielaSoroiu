@@ -1,30 +1,54 @@
 {% extends 'base.html.twig' %}
 {% block title %}Cafetería{% endblock %}
 {% block body %}
-    <h1>¡Bienvenid@!</h1>
-    <h3>Elige la cafetería que deseas explorar</h3>
-    <ul>
-        {% for c in cafeterias %}
-            <li>
-                <a href="{{ path('listar_bebida', { codigo : c.id } ) }}">
-                {{ c.nombre }} {{ c.calle }} {{ c.telefono }} {{ c.email }}</a>
-                <a href="{{ path('editar_cafeteria', { codigo: c.id }) }}">
-                Editar
-                </a>
-                <!--Hago un return confirm para que pregunte al usuario si realmente
-                quiere eliminar esa cafeteria-->
-                <a href="{{ path('eliminar_cafeteria', { codigo: c.id }) }}"
-                onclick="return confirm('¿Estás segura de que deseas eliminar {{ c.nombre }}?');">
-                Eliminar
-                </a>
-            </li>
-        {% else %}
-            <li>No hay ninguna cafeteria registrada actualmente</li>
-        {% endfor %}
-    </ul>
-    <h3>¿Deseas agregar uno nuevo?</h3>
-    <a href="{{ path('nueva_cafeteria') }}">Añadir una nueva</a>
-    <br>
-    <a href="{{ path('') }}">Cerrar sesión</a>
+<div class="text-center my-5">
+    <h1 class="fw-bold mb-4" style="color:#b56576;">¡Bienvenid@!</h1>
+    <h3 class="mb-4" style="color:#d46a8d;">Elige la cafetería que deseas explorar</h3>
 
+    <div class="table-responsive mx-auto" style="max-width:900px;">
+        <table class="table align-middle text-center bg-white rounded shadow-sm tabla-rosa">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Calle</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in cafeterias %}
+                    <tr>
+                        <td>{{ c.nombre }}</td>
+                        <td>{{ c.calle }}</td>
+                        <td>{{ c.telefono }}</td>
+                        <td>{{ c.email }}</td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a href="{{ path('listar_bebida', { codigo : c.id } ) }}" class="btn btn-ver">Ver</a>
+                                <a href="{{ path('editar_cafeteria', { codigo: c.id }) }}" class="btn btn-editar">Editar</a>
+                                <!--Hago un return confirm para que pregunte al usuario si realmente
+                                quiere eliminar esa cafeteria-->
+                                <a href="{{ path('eliminar_cafeteria', { codigo: c.id }) }}"
+                                   onclick="return confirm('¿Estás segura de que deseas eliminar {{ c.nombre }}?');"
+                                   class="btn btn-eliminar">Eliminar</a>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-muted">No hay ninguna cafetería registrada actualmente</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h3 class="mt-5" style="color:#b56576;">¿Deseas agregar una nueva?</h3>
+    <a href="{{ path('nueva_cafeteria') }}" class="btn btn-coquette mt-3">Añadir una nueva</a>
+
+    <div class="mt-4">
+        <a href="{{ path('app_logout') }}" class="btn btn-outline-secondary rounded-pill">Cerrar sesión</a>
+    </div>
+</div>
 {% endblock %}

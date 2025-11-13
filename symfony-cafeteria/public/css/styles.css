@@ -1,0 +1,59 @@
+body {
+  background-color: #fff0f6; 
+  font-family: 'Poppins', sans-serif;
+}
+
+h1, h2, h3 {
+  color: #d63384;
+}
+
+.btn-coquette {
+  background-color: #f8bbd0; 
+  color: white;
+  border-radius: 20px;
+  border: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-coquette:hover {
+  background-color: #f48fb1;
+  transform: scale(1.05);
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 15px;
+  border: 2px solid #f8bbd0;
+  box-shadow: 0 4px 8px rgba(255, 182, 193, 0.3);
+}
+
+.tabla-rosa {
+    border: 2px solid #f4c2c2;
+}
+
+.btn-ver {
+    background-color: #ffd6d6;
+    color: #000;
+}
+
+.btn-ver:hover {
+    background-color: #ffc0c0;
+}
+
+.btn-editar {
+    background-color: #f4a1a1;
+    color: #fff;
+}
+
+.btn-editar:hover {
+    background-color: #e87d7d;
+}
+
+.btn-eliminar {
+    background-color: #d95f5f;
+    color: #fff;
+}
+
+.btn-eliminar:hover {
+    background-color: #c34444;
+}

@@ -1,14 +1,33 @@
 {% extends 'base.html.twig' %}
 {% block title %}Editar Bebida{% endblock %}
-{% block body %}
-    <h1>Editar Bebida</h1>
-    {{ form_start(formulario, {'attr': {'novalidate': 'novalidate'}}) }}
-        {{ form_row(formulario.nombre) }}
-        {{ form_row(formulario.tipo) }}
-        {{ form_row(formulario.alergenos) }}
-        {{ form_row(formulario.cafeteria) }}
 
-        <button> Guardar cambios</button>
-        <a href="{{ path('inicio') }}"> Cancelar</a>
-    {{ form_end(formulario) }}    
+{% block body %}
+<div class="d-flex justify-content-center my-5">
+    <div class="card p-4" style="max-width:500px;">
+        <h1 class="fw-bold mb-4 text-center" style="color:#b56576;">Editar Bebida</h1>
+
+        {{ form_start(formulario, {'attr': {'novalidate': 'novalidate'}}) }}
+
+            <div class="mb-3">
+                {{ form_row(formulario.nombre, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                {{ form_row(formulario.tipo, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                {{ form_row(formulario.alergenos, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                {{ form_row(formulario.cafeteria, {'attr': {'class': 'form-select'}}) }}
+            </div>
+
+            <div class="d-flex justify-content-center gap-3 mt-4">
+                <button type="submit" class="btn btn-coquette">Guardar</button>
+                <a href="{{ path('listar_bebida', { 'codigo' : bebida.cafeteria.id }) }}" 
+                   class="btn btn-outline-secondary rounded-pill">Cancelar</a>
+            </div>
+
+        {{ form_end(formulario) }}
+    </div>
+</div>
 {% endblock %}

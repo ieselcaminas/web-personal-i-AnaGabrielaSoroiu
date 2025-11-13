@@ -16,9 +16,7 @@ class CafeteriaFormType extends AbstractType
             ->add('nombre')
             ->add('calle')
             ->add('telefono')
-            ->add('email')
-            ->add('save', SubmitType::class, array('label' => 'Enviar'));
-        ;
+            ->add('email');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
